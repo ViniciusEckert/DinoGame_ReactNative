@@ -1,9 +1,20 @@
 import { useGame } from "@/hooks/gamehook";
+import { useAudioPlayer } from "expo-audio";
 import { Link } from "expo-router";
-import { Image, ImageBackground, StyleSheet, Text, View } from "react-native";
+import {
+  Image,
+  ImageBackground,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+
+const audioSource = require("@/assets/audio/end.mp3");
 
 export default function End() {
   const { score } = useGame();
+  const playMusic = useAudioPlayer(audioSource);
 
   return (
     <View style={s.container}>
@@ -12,13 +23,19 @@ export default function End() {
         source={require("@/assets/images/background.png")}
       />
 
-      <View style={s.obstacle}>
+      <TouchableOpacity
+        style={s.obstacle}
+        onPress={() => {
+          playMusic.seekTo(0);
+          playMusic.play();
+        }}
+      >
         <Image
           source={require("@/assets/images/taunt.gif")}
           style={s.image}
           resizeMode="contain"
         />
-      </View>
+      </TouchableOpacity>
 
       <View style={s.dino}>
         <Image
